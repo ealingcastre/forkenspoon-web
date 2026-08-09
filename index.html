@@ -10,7 +10,13 @@
 <body>
 <header>
   <a class="brand" href="/">
-    <span class="brand-mark">🍴</span>
+    <span class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 2v7M9 2v7M12 2v7"/>
+        <path d="M6 9c0 2 1.5 3 3 3s3-1 3-3"/>
+        <path d="M9 12v10"/>
+      </svg>
+    </span>
     Forkenspoon
   </a>
   <nav>
@@ -30,34 +36,83 @@
     </div>
   </section>
 
+  <section class="story">
+    <div class="story-header">
+      <h2>The story, in a nutshell</h2>
+      <p>The same panels from the app's own welcome screen.</p>
+    </div>
+    <div class="story-strip">
+      <img src="/assets/onboarding/panel-1.jpg" alt="Onboarding story panel 1" loading="lazy">
+      <img src="/assets/onboarding/panel-2.jpg" alt="Onboarding story panel 2" loading="lazy">
+      <img src="/assets/onboarding/panel-3.jpg" alt="Onboarding story panel 3" loading="lazy">
+      <img src="/assets/onboarding/panel-4.jpg" alt="Onboarding story panel 4" loading="lazy">
+      <img src="/assets/onboarding/panel-5.jpg" alt="Onboarding story panel 5" loading="lazy">
+      <img src="/assets/onboarding/panel-6.jpg" alt="Onboarding story panel 6" loading="lazy">
+      <img src="/assets/onboarding/panel-7.jpg" alt="Onboarding story panel 7" loading="lazy">
+      <img src="/assets/onboarding/panel-8.jpg" alt="Onboarding story panel 8" loading="lazy">
+    </div>
+  </section>
+
   <section class="features">
     <div class="feature">
-      <span class="emoji">📖</span>
+      <span class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 5.5C4 4.67 4.67 4 5.5 4H12v16H5.5A1.5 1.5 0 0 1 4 18.5v-13Z"/>
+          <path d="M20 5.5C20 4.67 19.33 4 18.5 4H12v16h6.5a1.5 1.5 0 0 0 1.5-1.5v-13Z"/>
+        </svg>
+      </span>
       <h3>Your recipe box</h3>
       <p>Grandma's lasagna, that Tuesday-night invention, the recipe your mate texted you — all saved with photos, ingredients, and steps. Keep the real secrets secret with Secret Recipe mode.</p>
     </div>
     <div class="feature">
-      <span class="emoji">🗓️</span>
+      <span class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3.5" y="5" width="17" height="15" rx="2"/>
+          <path d="M3.5 9.5h17"/>
+          <path d="M8 3v3.5M16 3v3.5"/>
+        </svg>
+      </span>
       <h3>Weekly planner</h3>
       <p>Drag your saved dishes onto the week ahead and just see it. No more "we have nothing planned" panic at 5pm.</p>
     </div>
     <div class="feature">
-      <span class="emoji">🛒</span>
+      <span class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 8h12l-1 12.5a1 1 0 0 1-1 .9H8a1 1 0 0 1-1-.9L6 8Z"/>
+          <path d="M9 8V6a3 3 0 0 1 6 0v2"/>
+        </svg>
+      </span>
       <h3>Grocery list, automatically</h3>
       <p>Whatever's on the plan turns into a shopping list — tick things off, or copy the whole thing to send to whoever's doing the shop.</p>
     </div>
     <div class="feature">
-      <span class="emoji">🍴</span>
+      <span class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 2v7M9 2v7M12 2v7"/>
+          <path d="M6 9c0 2 1.5 3 3 3s3-1 3-3"/>
+          <path d="M9 12v10"/>
+        </svg>
+      </span>
       <h3>Fork a recipe</h3>
       <p>See a dish in the feed you're keen to try? Fork it, tweak it to taste, and it stays linked back to where the idea started.</p>
     </div>
     <div class="feature">
-      <span class="emoji">🏠</span>
+      <span class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 11 12 4l8 7"/>
+          <path d="M6 10v9a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-9"/>
+          <path d="M10 20v-6h4v6"/>
+        </svg>
+      </span>
       <h3>Cook together</h3>
       <p>Set up a household so meal plans and grocery lists sync for everyone — no more "I thought YOU were sorting dinner" texts.</p>
     </div>
     <div class="feature">
-      <span class="emoji">👋</span>
+      <span class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 20s-7-4.4-9.5-9C1 8 2 4.5 5.5 4 8 3.6 10 5 12 7c2-2 4-3.4 6.5-3 3.5.5 4.5 4 3 7-2.5 4.6-9.5 9-9.5 9Z"/>
+        </svg>
+      </span>
       <h3>No corporate nonsense</h3>
       <p>Built for normal family kitchens, not food influencers. Just a nicer way to answer "what's for dinner."</p>
     </div>
