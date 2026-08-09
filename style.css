@@ -122,6 +122,11 @@ main {
   border: 1.5px solid var(--green);
 }
 
+.btn-disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
 .features {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
