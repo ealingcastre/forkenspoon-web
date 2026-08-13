@@ -231,17 +231,25 @@ footer a {
 
 .story-strip {
   display: flex;
-  gap: 16px;
+  /* Gap keeps the next panel's box-shadow from bleeding into view at the
+     frame's edge -- without it, adjacent panels sit flush and the
+     shadow/rounded corner of panel N+1 peeks through. */
+  gap: 24px;
   overflow-x: auto;
   padding: 8px 4px 20px;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
+  /* Frame is capped to one panel's own width and centered, so only a
+     single panel is ever in view at once instead of a multi-panel strip
+     -- swiping snaps cleanly from one to the next. */
+  max-width: 340px;
+  margin: 0 auto;
 }
 
 .story-strip img {
   scroll-snap-align: start;
-  flex: 0 0 auto;
-  width: 220px;
+  flex: 0 0 100%;
+  width: 100%;
   height: auto;
   border-radius: 16px;
   border: 1px solid var(--border);
@@ -250,5 +258,5 @@ footer a {
 }
 
 @media (max-width: 600px) {
-  .story-strip img { width: 68vw; }
+  .story-strip { max-width: 88vw; }
 }
