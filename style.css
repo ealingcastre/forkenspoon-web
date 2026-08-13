@@ -260,3 +260,23 @@ footer a {
 @media (max-width: 600px) {
   .story-strip { max-width: 88vw; }
 }
+
+/* Since only one panel shows at a time, these dots are what actually
+   tells a visitor there's more than one to swipe through. */
+.story-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.story-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border);
+  transition: background-color 0.2s ease;
+}
+
+.story-dot.active {
+  background: var(--green);
+}
