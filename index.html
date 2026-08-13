@@ -35,14 +35,14 @@
       <h2>The story, in a nutshell</h2>
     </div>
     <div class="story-strip">
-      <img src="/assets/onboarding/panel-1.gif" alt="Onboarding story panel 1" loading="lazy">
-      <img src="/assets/onboarding/panel-2.gif" alt="Onboarding story panel 2" loading="lazy">
-      <img src="/assets/onboarding/panel-3.gif" alt="Onboarding story panel 3" loading="lazy">
-      <img src="/assets/onboarding/panel-4.gif" alt="Onboarding story panel 4" loading="lazy">
-      <img src="/assets/onboarding/panel-5.gif" alt="Onboarding story panel 5" loading="lazy">
-      <img src="/assets/onboarding/panel-6.gif" alt="Onboarding story panel 6" loading="lazy">
-      <img src="/assets/onboarding/panel-7.gif" alt="Onboarding story panel 7" loading="lazy">
-      <img src="/assets/onboarding/panel-8.gif" alt="Onboarding story panel 8" loading="lazy">
+      <img data-src="/assets/onboarding/panel-1.gif" alt="Onboarding story panel 1">
+      <img data-src="/assets/onboarding/panel-2.gif" alt="Onboarding story panel 2">
+      <img data-src="/assets/onboarding/panel-3.gif" alt="Onboarding story panel 3">
+      <img data-src="/assets/onboarding/panel-4.gif" alt="Onboarding story panel 4">
+      <img data-src="/assets/onboarding/panel-5.gif" alt="Onboarding story panel 5">
+      <img data-src="/assets/onboarding/panel-6.gif" alt="Onboarding story panel 6">
+      <img data-src="/assets/onboarding/panel-7.gif" alt="Onboarding story panel 7">
+      <img data-src="/assets/onboarding/panel-8.gif" alt="Onboarding story panel 8">
     </div>
   </section>
 
@@ -121,5 +121,61 @@
 <footer>
   &copy; 2026 Erick Alingcastre · <a href="/privacy.html">Privacy</a> · <a href="/support.html">Support</a>
 </footer>
+
+<script>
+// Onboarding story panels are animated GIFs, which a plain <img> gives no
+// play/pause/seek control over -- once decoded they just loop forever.
+// To make each panel start from frame 1 exactly when it scrolls into
+// view (and restart from frame 1 every time it re-enters after being
+// scrolled away, per the product ask), each GIF is fetched once into a
+// Blob and kept in memory; "restarting" it is then just re-pointing the
+// <img>'s src at that same in-memory blob URL (which forces the browser
+// to redecode from frame 1), never a repeat network fetch of what can be
+// a many-MB file.
+(function () {
+  var imgs = document.querySelectorAll('.story-strip img[data-src]');
+  if (!imgs.length || !('IntersectionObserver' in window)) return;
+
+  var blobUrlPromises = new WeakMap();
+
+  function blobUrlFor(img) {
+    var cached = blobUrlPromises.get(img);
+    if (cached) return cached;
+    var promise = fetch(img.dataset.src)
+      .then(function (res) { return res.blob(); })
+      .then(function (blob) { return URL.createObjectURL(blob); });
+    blobUrlPromises.set(img, promise);
+    return promise;
+  }
+
+  function restart(img) {
+    blobUrlFor(img).then(function (url) {
+      // Clearing src first (and forcing a reflow) before reassigning the
+      // same blob URL is what actually makes the browser redecode from
+      // frame 1 -- just reassigning the same value is a no-op.
+      img.src = '';
+      void img.offsetWidth;
+      img.src = url;
+    });
+  }
+
+  var observer = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          restart(entry.target);
+        } else {
+          entry.target.removeAttribute('src');
+        }
+      });
+    },
+    { threshold: 0.5 }
+  );
+
+  imgs.forEach(function (img) {
+    observer.observe(img);
+  });
+})();
+</script>
 </body>
 </html>
