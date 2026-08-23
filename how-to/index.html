@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How To — Forkenspoon</title>
+<meta name="description" content="Quick tips on getting the most out of Forkenspoon, one short clip at a time.">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <a class="brand" href="/">
+    <span class="brand-mark"><img src="/assets/brand/logo.png" alt="Forkenspoon logo"></span>
+    Forkenspoon
+  </a>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/how-to/" class="active">How To</a>
+    <a href="/support.html">Support</a>
+    <a href="/privacy.html">Privacy</a>
+  </nav>
+</header>
+
+<main>
+  <h1 class="page-title">Did you know?</h1>
+  <p class="subtitle">Quick feature tips, one short clip at a time. The app shows you one of these at random each time you sign in.</p>
+
+  <div class="tip-grid" id="tip-grid"></div>
+  <p class="subtitle" id="tip-empty" style="display:none">No tips published yet — check back soon.</p>
+</main>
+
+<footer>
+  &copy; 2026 Erick Alingcastre · <a href="/privacy.html">Privacy</a> · <a href="/support.html">Support</a>
+</footer>
+
+<script>
+// manifest.json is a plain static file living right alongside this page --
+// see how-to/README.md for how to publish a new tip (drop an mp4 in
+// videos/, add an entry here, commit). The Forkenspoon app fetches this
+// same file (via its absolute https://www.forkenspoon.com/how-to/manifest.json
+// URL) to pick a random tip to show on sign-in.
+fetch('manifest.json', { cache: 'no-store' })
+  .then(function (res) { return res.json(); })
+  .then(function (data) {
+    var videos = Array.isArray(data.videos) ? data.videos : [];
+    var grid = document.getElementById('tip-grid');
+    if (videos.length === 0) {
+      document.getElementById('tip-empty').style.display = 'block';
+      return;
+    }
+    videos.forEach(function (video) {
+      if (!video.url) return;
+      var card = document.createElement('div');
+      card.className = 'tip-card';
+      var player = document.createElement('video');
+      player.src = video.url;
+      player.controls = true;
+      player.preload = 'metadata';
+      card.appendChild(player);
+      if (video.title) {
+        var caption = document.createElement('div');
+        caption.className = 'tip-caption';
+        caption.textContent = video.title;
+        card.appendChild(caption);
+      }
+      grid.appendChild(card);
+    });
+  })
+  .catch(function () {
+    document.getElementById('tip-empty').textContent = "Couldn't load tips right now.";
+    document.getElementById('tip-empty').style.display = 'block';
+  });
+</script>
+</body>
+</html>

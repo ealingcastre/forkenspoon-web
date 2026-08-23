@@ -261,6 +261,34 @@ footer a {
   .story-strip { max-width: 88vw; }
 }
 
+/* How To tip grid */
+.tip-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.tip-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.tip-card video {
+  width: 100%;
+  display: block;
+  background: #000;
+  aspect-ratio: 9 / 16;
+}
+
+.tip-card .tip-caption {
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
 /* Since only one panel shows at a time, these dots are what actually
    tells a visitor there's more than one to swipe through. */
 .story-dots {
