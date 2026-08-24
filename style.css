@@ -120,9 +120,10 @@ main {
   border: 1.5px solid var(--green);
 }
 
-.btn-disabled {
-  opacity: 0.55;
-  cursor: default;
+.cta-note {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
 }
 
 .features {
