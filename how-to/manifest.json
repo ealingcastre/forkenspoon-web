@@ -1,3 +1,12 @@
 {
-  "videos": []
+  "videos": [
+    {
+      "url": "https://www.forkenspoon.com/how-to/videos/draft-function.mp4",
+      "title": "Draft recipes before publishing them"
+    },
+    {
+      "url": "https://www.forkenspoon.com/how-to/videos/multi-dish-day.mp4",
+      "title": "Plan multiple dishes for one day"
+    }
+  ]
 }
