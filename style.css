@@ -247,7 +247,7 @@ footer a {
   margin: 0 auto;
 }
 
-.story-strip img {
+.story-strip video {
   scroll-snap-align: start;
   flex: 0 0 100%;
   width: 100%;

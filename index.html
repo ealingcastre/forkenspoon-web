@@ -37,14 +37,14 @@
       <h2>The story, in a nutshell</h2>
     </div>
     <div class="story-strip">
-      <img data-src="/assets/onboarding/panel-1.gif" alt="Onboarding story panel 1">
-      <img data-src="/assets/onboarding/panel-2.gif" alt="Onboarding story panel 2">
-      <img data-src="/assets/onboarding/panel-3.gif" alt="Onboarding story panel 3">
-      <img data-src="/assets/onboarding/panel-4.gif" alt="Onboarding story panel 4">
-      <img data-src="/assets/onboarding/panel-5.gif" alt="Onboarding story panel 5">
-      <img data-src="/assets/onboarding/panel-6.gif" alt="Onboarding story panel 6">
-      <img data-src="/assets/onboarding/panel-7.gif" alt="Onboarding story panel 7">
-      <img data-src="/assets/onboarding/panel-8.gif" alt="Onboarding story panel 8">
+      <video data-src="/assets/onboarding/panel-1.mp4" aria-label="Onboarding story panel 1" muted playsinline preload="none"></video>
+      <video data-src="/assets/onboarding/panel-2.mp4" aria-label="Onboarding story panel 2" muted playsinline preload="none"></video>
+      <video data-src="/assets/onboarding/panel-3.mp4" aria-label="Onboarding story panel 3" muted playsinline preload="none"></video>
+      <video data-src="/assets/onboarding/panel-4.mp4" aria-label="Onboarding story panel 4" muted playsinline preload="none"></video>
+      <video data-src="/assets/onboarding/panel-5.mp4" aria-label="Onboarding story panel 5" muted playsinline preload="none"></video>
+      <video data-src="/assets/onboarding/panel-6.mp4" aria-label="Onboarding story panel 6" muted playsinline preload="none"></video>
+      <video data-src="/assets/onboarding/panel-7.mp4" aria-label="Onboarding story panel 7" muted playsinline preload="none"></video>
+      <video data-src="/assets/onboarding/panel-8.mp4" aria-label="Onboarding story panel 8" muted playsinline preload="none"></video>
     </div>
     <div class="story-dots" aria-hidden="true">
       <span class="story-dot"></span>
@@ -135,19 +135,19 @@
 </footer>
 
 <script>
-// Onboarding story panels are animated GIFs, which a plain <img> gives no
-// play/pause/seek control over -- once decoded they just loop forever.
-// To make each panel start from frame 1 exactly when it scrolls into
-// view (and restart from frame 1 every time it re-enters after being
-// scrolled away, per the product ask), each GIF is fetched once into a
-// Blob and kept in memory; "restarting" it is then just re-pointing the
-// <img>'s src at that same in-memory blob URL (which forces the browser
-// to redecode from frame 1), never a repeat network fetch of what can be
-// a many-MB file.
+// Onboarding story panels are short muted videos -- unlike the animated
+// GIFs these replaced, a <video> gives real play/pause/seek control and,
+// crucially, an `ended` event, which is what makes auto-advancing to the
+// next panel possible at all (a GIF has no equivalent signal for "one loop
+// just finished"). `preload="none"` + a `data-src` (rather than `src`)
+// keeps all 8 videos' network fetches deferred until each is actually
+// about to be shown, same lazy-loading intent as the GIF version.
 (function () {
-  var imgs = document.querySelectorAll('.story-strip img[data-src]');
+  var videos = document.querySelectorAll('.story-strip video[data-src]');
   var dots = document.querySelectorAll('.story-dot');
-  if (!imgs.length || !('IntersectionObserver' in window)) return;
+  if (!videos.length || !('IntersectionObserver' in window)) return;
+
+  var videoList = Array.prototype.slice.call(videos);
 
   function setActiveDot(index) {
     dots.forEach(function (dot, i) {
@@ -156,47 +156,50 @@
   }
   setActiveDot(0);
 
-  var blobUrlPromises = new WeakMap();
-
-  function blobUrlFor(img) {
-    var cached = blobUrlPromises.get(img);
-    if (cached) return cached;
-    var promise = fetch(img.dataset.src)
-      .then(function (res) { return res.blob(); })
-      .then(function (blob) { return URL.createObjectURL(blob); });
-    blobUrlPromises.set(img, promise);
-    return promise;
+  function playPanel(video) {
+    if (!video.getAttribute('src')) video.src = video.dataset.src;
+    video.currentTime = 0;
+    // play() can reject if a pause() lands right after it (fast scrolling
+    // past a panel mid-load) -- harmless, just needs to not surface as an
+    // unhandled rejection in the console.
+    video.play().catch(function () {});
   }
 
-  function restart(img) {
-    blobUrlFor(img).then(function (url) {
-      // Clearing src first (and forcing a reflow) before reassigning the
-      // same blob URL is what actually makes the browser redecode from
-      // frame 1 -- just reassigning the same value is a no-op.
-      img.src = '';
-      void img.offsetWidth;
-      img.src = url;
+  function stopPanel(video) {
+    video.pause();
+    video.removeAttribute('src');
+    video.load();
+  }
+
+  // Loops back to panel 1 once the last one finishes, so the strip reads
+  // as a continuous, ambient story rather than stopping dead at panel 8.
+  function goToPanel(index) {
+    var target = videoList[(index + videoList.length) % videoList.length];
+    target.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
+  }
+
+  videoList.forEach(function (video, index) {
+    video.addEventListener('ended', function () {
+      goToPanel(index + 1);
     });
-  }
-
-  var imgList = Array.prototype.slice.call(imgs);
+  });
 
   var observer = new IntersectionObserver(
     function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
-          restart(entry.target);
-          setActiveDot(imgList.indexOf(entry.target));
+          playPanel(entry.target);
+          setActiveDot(videoList.indexOf(entry.target));
         } else {
-          entry.target.removeAttribute('src');
+          stopPanel(entry.target);
         }
       });
     },
     { threshold: 0.5 }
   );
 
-  imgs.forEach(function (img) {
-    observer.observe(img);
+  videoList.forEach(function (video) {
+    observer.observe(video);
   });
 })();
 </script>
