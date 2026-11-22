@@ -258,6 +258,11 @@ footer a {
   flex: 0 0 100%;
   width: 100%;
   height: auto;
+  /* Panels are 608x1080. Without a fixed ratio an unloaded panel (src
+     removed by stopPanel) collapses to the default video height, which
+     flips its 50% visibility and makes the observer reload/unload it in a
+     loop whenever the panel is only partly on screen. */
+  aspect-ratio: 608 / 1080;
   border-radius: 16px;
   border: 1px solid var(--border);
   background: var(--card);
@@ -314,4 +319,40 @@ footer a {
 
 .story-dot.active {
   background: var(--green);
+}
+
+.story-sound {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 16px auto 0;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.story-sound svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.story-sound .icon-sound,
+.story-sound[aria-pressed="true"] .icon-muted {
+  display: none;
+}
+
+.story-sound[aria-pressed="true"] .icon-sound {
+  display: block;
+}
+
+.story-sound[aria-pressed="true"] {
+  color: var(--green);
+  border-color: var(--green);
 }
